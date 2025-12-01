@@ -1,0 +1,31 @@
+Beauty Store
+
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+
+
+    <%= render 'shared/header' %>
+
+    <% if notice %>
+      <%= notice %>
+    <% end %>
+
+    <% if alert %>
+      <%= alert %>
+    <% end %>
+
+    <% if breadcrumbs? %>
+
+
+          <%= breadcrumbs separator: " / " %>
+
+
+    <% end %>
+
+
+      <%= yield %>
+
+
+    <%= render 'shared/footer' %>

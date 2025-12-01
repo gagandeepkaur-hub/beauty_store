@@ -1,0 +1,12 @@
+class Address < ApplicationRecord
+  belongs_to :user
+  belongs_to :province
+
+  validates :street, presence: true
+  validates :city, presence: true
+  validates :postal_code, presence: true, format: { with: /\A[A-Z]\d[A-Z] \d[A-Z]\d\z/i }
+
+  def full_address
+    "#{street}, #{city}, #{province.name} #{postal_code}"
+  end
+end

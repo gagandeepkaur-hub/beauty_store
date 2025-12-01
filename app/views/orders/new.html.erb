@@ -1,0 +1,160 @@
+<% breadcrumb :checkout %>
+
+
+  Checkout
+
+
+
+      Order Summary
+
+
+        <% @cart_items.each do |product, quantity| %>
+
+
+              <% if product.main_image.attached? %>
+                <%= image_tag product.main_image.variant(:thumb), alt: product.name %>
+              <% end %>
+
+
+              <%= product.name %>
+              Quantity: <%= quantity %>
+              $<%= number_with_precision(product.price * quantity, precision: 2) %>
+
+
+        <% end %>
+
+
+
+
+          Subtotal:
+          $<%= number_with_precision(@subtotal, precision: 2) %>
+
+
+          Tax:
+          Select province
+
+
+          Total:
+          Select province
+
+
+
+
+
+      Shipping Information
+
+      <%= form_with model: @order, url: orders_path, local: true do |f| %>
+        <% if @order.errors.any? %>
+
+            <%= pluralize(@order.errors.count, "error") %> prohibited this order:
+
+              <% @order.errors.full_messages.each do |message| %>
+                <%= message %>
+              <% end %>
+
+
+        <% end %>
+
+        <% if current_user.primary_address %>
+
+            Saved Address:
+            <%= current_user.primary_address.full_address %>
+
+              <%= check_box_tag :use_saved_address, '1', true, id: 'use-saved-address' %>
+              Use this address
+
+
+        <% end %>
+
+
+          <%= label_tag :shipping_street, "Street Address" %>
+          <%= text_field_tag 'order[shipping_street]', current_user.primary_address&.street, class: "form-control", required: true %>
+
+
+
+          <%= label_tag :shipping_city, "City" %>
+          <%= text_field_tag 'order[shipping_city]', current_user.primary_address&.city, class: "form-control", required: true %>
+
+
+
+          <%= f.label :province_id, "Province" %>
+          <%= f.collection_select :province_id, Province.all.order(:name), :id, :name, { selected: @order.province_id }, { class: "form-control", required: true, id: 'province-select' } %>
+
+
+
+          <%= label_tag :shipping_postal_code, "Postal Code" %>
+          <%= text_field_tag 'order[shipping_postal_code]', current_user.primary_address&.postal_code, class: "form-control", placeholder: "A1A 1A1", required: true %>
+
+
+
+          <%= check_box_tag :save_address, '1', true %>
+          <%= label_tag :save_address, "Save this address for future orders" %>
+
+
+
+          <%= f.submit "Place Order", class: "btn btn-primary btn-large" %>
+          <%= link_to "Back to Cart", cart_path, class: "btn btn-secondary" %>
+
+      <% end %>
+
+
+
+
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const provinceSelect = document.getElementById('province-select');
+    const useSavedAddress = document.getElementById('use-saved-address');
+
+    const provinceData = {
+      <% Province.all.each do |province| %>
+        <%= province.id %>: { name: '<%= province.name %>', rate: <%= province.total_tax_rate %> },
+      <% end %>
+    };
+
+    const subtotal = <%= @subtotal %>;
+
+    function updateTaxes() {
+      const provinceId = parseInt(provinceSelect.value);
+      if (provinceId && provinceData[provinceId]) {
+        const province = provinceData[provinceId];
+        const taxRate = province.rate / 100;
+        const tax = subtotal * taxRate;
+        const total = subtotal + tax;
+
+        document.getElementById('tax-amount').textContent = ' + tax.toFixed(2);
+        document.getElementById('total-amount').innerHTML = ' + total.toFixed(2) + '';
+      }
+    }
+
+    provinceSelect.addEventListener('change', updateTaxes);
+
+    if (provinceSelect.value) {
+      updateTaxes();
+    }
+
+    if (useSavedAddress) {
+      const addressFields = {
+        street: document.querySelector('[name="order[shipping_street]"]'),
+        city: document.querySelector('[name="order[shipping_city]"]'),
+        postal: document.querySelector('[name="order[shipping_postal_code]"]')
+      };
+
+      const savedAddress = {
+        street: '<%= current_user.primary_address&.street %>',
+        city: '<%= current_user.primary_address&.city %>',
+        postal: '<%= current_user.primary_address&.postal_code %>'
+      };
+
+      useSavedAddress.addEventListener('change', function() {
+        if (this.checked) {
+          addressFields.street.value = savedAddress.street;
+          addressFields.city.value = savedAddress.city;
+          addressFields.postal.value = savedAddress.postal;
+        } else {
+          addressFields.street.value = '';
+          addressFields.city.value = '';
+          addressFields.postal.value = '';
+        }
+      });
+    }
+  });

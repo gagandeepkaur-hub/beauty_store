@@ -1,0 +1,34 @@
+<% breadcrumb :products %>
+
+
+  Our Products
+
+
+    <%= form_with url: products_path, method: :get, local: true do %>
+      <%= text_field_tag :search, params[:search], placeholder: "Search products...", class: "search-input" %>
+      <%= select_tag :category, options_for_select([
+        ['All Categories', ''],
+        ['Skincare', 'Skincare'],
+        ['Makeup', 'Makeup'],
+        ['Haircare', 'Haircare'],
+        ['Fragrance', 'Fragrance'],
+        ['Body Care', 'Body Care'],
+        ['Tools & Accessories', 'Tools & Accessories']
+      ], params[:category]), class: "category-select" %>
+      <%= submit_tag "Search", class: "btn btn-primary" %>
+    <% end %>
+
+
+
+    <%= link_to "All", products_path, class: "filter-btn" %>
+    <%= link_to "On Sale", products_path(on_sale: true), class: "filter-btn" %>
+    <%= link_to "New Arrivals", products_path(new_arrivals: true), class: "filter-btn" %>
+    <%= link_to "Recently Updated", products_path(recently_updated: true), class: "filter-btn" %>
+
+
+
+    <%= render @products %>
+
+
+
+    <%= paginate @products %>

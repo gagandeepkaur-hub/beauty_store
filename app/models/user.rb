@@ -1,0 +1,18 @@
+class User < ApplicationRecord
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable
+
+  has_many :addresses, dependent: :destroy
+  has_many :orders, dependent: :destroy
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
+  def primary_address
+    addresses.first
+  end
+end

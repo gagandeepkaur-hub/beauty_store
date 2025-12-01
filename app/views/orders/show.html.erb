@@ -1,0 +1,60 @@
+<% breadcrumb :order, @order %>
+
+
+  Order #<%= @order.id %>
+
+
+    <%= @order.status.titleize %>
+    Placed on <%= @order.created_at.strftime("%B %d, %Y") %>
+
+
+
+
+      Order Items
+
+      <% @order.order_items.each do |item| %>
+
+
+            <% if item.product.main_image.attached? %>
+              <%= image_tag item.product.main_image.variant(:thumb), alt: item.product.name %>
+            <% end %>
+
+
+            <%= link_to item.product.name, product_path(item.product) %>
+            Brand: <%= item.product.brand %>
+            Quantity: <%= item.quantity %>
+            Price: $<%= number_with_precision(item.price, precision: 2) %>
+            Subtotal: $<%= number_with_precision(item.subtotal, precision: 2) %>
+
+
+      <% end %>
+
+
+
+      Order Summary
+
+
+
+          Subtotal:
+          $<%= number_with_precision(@order.subtotal, precision: 2) %>
+
+
+          Tax:
+          $<%= number_with_precision(@order.tax, precision: 2) %>
+
+
+          Total:
+          $<%= number_with_precision(@order.total, precision: 2) %>
+
+
+
+      Shipping Address
+
+        <%= @order.shipping_street %>
+        <%= @order.shipping_city %>, <%= @order.shipping_province_name %>
+        <%= @order.shipping_postal_code %>
+
+
+
+
+  <%= link_to "← Back to Orders", orders_path, class: "back-link" %>

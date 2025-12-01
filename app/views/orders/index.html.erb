@@ -1,0 +1,42 @@
+<% breadcrumb :orders %>
+
+
+  My Orders
+
+  <% if @orders.empty? %>
+    You haven't placed any orders yet.
+    <%= link_to "Start Shopping", products_path, class: "btn btn-primary" %>
+  <% else %>
+
+      <% @orders.each do |order| %>
+
+
+            Order #<%= order.id %>
+            <%= order.status.titleize %>
+
+
+
+            Date: <%= order.created_at.strftime("%B %d, %Y") %>
+            Total: $<%= number_with_precision(order.total, precision: 2) %>
+            Items: <%= order.order_items.count %>
+
+
+          <%= link_to "View Details", order_path(order), class: "btn btn-primary" %>
+
+      <% end %>
+
+  <% end %>
+
+```
+
+---
+
+## app/views/pages/show.html.erb
+
+```erb
+<% breadcrumb :page, @page %>
+
+
+  <%= @page.title %>
+
+    <%= @page.content.html_safe %>

@@ -1,0 +1,19 @@
+<%= link_to product_path(product) do %>
+    <% if product.main_image.attached? %>
+      <%= image_tag product.main_image.variant(:medium), alt: product.name, class: "product-image" %>
+    <% end %>
+
+
+      <%= product.name %>
+      <%= product.brand %>
+      $<%= number_with_precision(product.price, precision: 2) %>
+
+      <% if product.on_sale %>
+        On Sale
+      <% end %>
+
+      <% if product.new_arrival %>
+        New
+      <% end %>
+
+  <% end %>
