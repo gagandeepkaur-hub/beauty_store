@@ -1,31 +1,22 @@
-Beauty Store
-
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Beauty Store</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
-    <%= javascript_importmap_tags %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
 
+  <body>
+    <%= render "shared/header" %>
 
-    <%= render 'shared/header' %>
-
-    <% if notice %>
-      <%= notice %>
-    <% end %>
-
-    <% if alert %>
-      <%= alert %>
-    <% end %>
-
-    <% if breadcrumbs? %>
-
-
-          <%= breadcrumbs separator: " / " %>
-
-
-    <% end %>
-
-
+    <main class="page-content">
       <%= yield %>
+    </main>
 
+    <%= render "shared/footer" %>
+  </body>
+</html>
 
-    <%= render 'shared/footer' %>

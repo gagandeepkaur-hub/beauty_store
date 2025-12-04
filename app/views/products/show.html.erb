@@ -1,53 +1,51 @@
-<% breadcrumb :product, @product %>
+<div class="product-show">
+  <div class="product-show-inner">
 
-
-
-
-      <% if @product.main_image.attached? %>
-        <%= image_tag @product.main_image.variant(:large), alt: @product.name, class: "main-product-image" %>
+    <div class="product-show-image">
+      <% if @product.main_image&.attached? %>
+        <%= image_tag @product.main_image, alt: @product.name %>
+      <% else %>
+        <div class="product-image-placeholder">
+          <span>No image yet</span>
+        </div>
       <% end %>
+    </div>
 
-      <% if @product.gallery_images.attached? %>
+    <div class="product-show-details">
+      <p class="product-show-breadcrumb">
+        <%= link_to "Home", root_path %> /
+        <%= link_to "All Products", products_path %> /
+        <span><%= @product.name %></span>
+      </p>
 
-          <% @product.gallery_images.each do |image| %>
-            <%= image_tag image.variant(:thumb), alt: @product.name, class: "gallery-thumb" %>
+      <h1 class="product-show-name"><%= @product.name %></h1>
+      <p class="product-show-brand"><%= @product.brand %></p>
+
+      <p class="product-show-price">
+        <%= number_to_currency(@product.price || 0) %>
+      </p>
+
+      <% if @product.on_sale? || @product.new_arrival? %>
+        <div class="product-show-tags">
+          <% if @product.on_sale? %>
+            <span class="tag tag-sale">On Sale</span>
           <% end %>
-
-      <% end %>
-
-
-
-      <%= @product.name %>
-      <%= @product.brand %>
-      <%= @product.category %>
-
-      <% if @product.categories.any? %>
-
-          <% @product.categories.each do |cat| %>
-            <%= link_to cat.name, products_path(category: cat.name), class: "tag" %>
+          <% if @product.new_arrival? %>
+            <span class="tag tag-new">New</span>
           <% end %>
-
+        </div>
       <% end %>
 
-      $<%= number_with_precision(@product.price, precision: 2) %>
+      <p class="product-show-description">
+        <%= @product.description.presence || "Beautiful product coming soon. Description not added yet." %>
+      </p>
 
+      <div class="product-show-actions">
+        <a href="#" class="btn-primary">Add to Cart</a>
+        <%= link_to "Back to all products", products_path, class: "btn-outline" %>
+      </div>
+    </div>
 
-        <% if @product.on_sale %>
-          On Sale
-        <% end %>
+  </div>
+</div>
 
-        <% if @product.new_arrival %>
-          New Arrival
-        <% end %>
-
-
-
-        Description
-        <%= @product.description %>
-
-
-      <%= button_to "Add to Cart", cart_items_path(product_id: @product.id), method: :post, class: "btn btn-primary btn-large" %>
-
-
-
-  <%= link_to "← Back to Products", products_path, class: "back-link" %>

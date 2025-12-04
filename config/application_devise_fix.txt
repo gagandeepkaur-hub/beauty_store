@@ -1,0 +1,4 @@
+
+# Add this line after "require_relative "boot""
+require 'devise'
+

@@ -196,4 +196,4 @@ end
 
 puts "Created #{Product.count} products"
 puts "Setup complete! Visit http://localhost:3000/admin"
-puts "Admin login: admin@example.com / password"
+puts "Admin login: admin@example.com / password"AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?

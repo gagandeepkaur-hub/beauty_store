@@ -1,19 +1,25 @@
-<%= link_to product_path(product) do %>
-    <% if product.main_image.attached? %>
-      <%= image_tag product.main_image.variant(:medium), alt: product.name, class: "product-image" %>
+<div class="product-card">
+
+  <%= link_to product_path(product), class: "product-image-wrap" do %>
+
+    <% if product.category == "Skincare" %>
+      <%= image_tag "skincare.jpg", class: "product-image" %>
+
+    <% elsif product.category == "Fragrance" %>
+      <%= image_tag "fragrance.jpg", class: "product-image" %>
+
+    <% elsif product.category == "Haircare" %>
+      <%= image_tag "haircare.jpg", class: "product-image" %>
+
+    <% else %>
+      <%= image_tag "makeup.jpg", class: "product-image" %>
     <% end %>
 
-
-      <%= product.name %>
-      <%= product.brand %>
-      $<%= number_with_precision(product.price, precision: 2) %>
-
-      <% if product.on_sale %>
-        On Sale
-      <% end %>
-
-      <% if product.new_arrival %>
-        New
-      <% end %>
-
   <% end %>
+
+  <h3 class="product-name"><%= product.name %></h3>
+  <p class="product-brand"><%= product.brand %></p>
+  <p class="product-price">$<%= number_with_precision(product.price, precision: 2) %></p>
+
+  <button class="add-cart-btn">ADD TO CART</button>
+</div>

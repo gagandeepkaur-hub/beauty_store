@@ -1,42 +1,26 @@
-<% breadcrumb :orders %>
+<h1 class="page-title">My Orders</h1>
 
+<% if @orders.blank? %>
+  <p>You haven't placed any orders yet.</p>
+  <%= link_to "Start Shopping", products_path, class: "btn btn-primary" %>
+<% else %>
+  <div class="orders-list">
+    <% @orders.each do |order| %>
+      <div class="order-card">
+        <div class="order-header">
+          <span class="order-number">Order #<%= order.id %></span>
+          <span class="order-status"><%= order.status.to_s.titleize %></span>
+        </div>
 
-  My Orders
+        <div class="order-meta">
+          <span>Date: <%= order.created_at.strftime("%B %d, %Y") %></span>
+          <span>Total: $<%= number_with_precision(order.total, precision: 2) %></span>
+          <span>Items: <%= order.order_items.count %></span>
+        </div>
 
-  <% if @orders.empty? %>
-    You haven't placed any orders yet.
-    <%= link_to "Start Shopping", products_path, class: "btn btn-primary" %>
-  <% else %>
-
-      <% @orders.each do |order| %>
-
-
-            Order #<%= order.id %>
-            <%= order.status.titleize %>
-
-
-
-            Date: <%= order.created_at.strftime("%B %d, %Y") %>
-            Total: $<%= number_with_precision(order.total, precision: 2) %>
-            Items: <%= order.order_items.count %>
-
-
-          <%= link_to "View Details", order_path(order), class: "btn btn-primary" %>
-
-      <% end %>
-
-  <% end %>
-
-```
-
----
-
-## app/views/pages/show.html.erb
-
-```erb
-<% breadcrumb :page, @page %>
-
-
-  <%= @page.title %>
-
-    <%= @page.content.html_safe %>
+        <%# If you don't have orders#show yet, comment out the link below %>
+        <%# <%= link_to "View Details", order_path(order), class: "btn btn-outline" %> %>
+      </div>
+    <% end %>
+  </div>
+<% end %>

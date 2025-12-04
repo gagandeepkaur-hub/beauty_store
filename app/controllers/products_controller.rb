@@ -1,21 +1,18 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.all.order(created_at: :desc)
+    scope = Product.all
 
-    @products = @products.on_sale if params[:on_sale] == 'true'
-    @products = @products.new_arrivals if params[:new_arrivals] == 'true'
-    @products = @products.recently_updated if params[:recently_updated] == 'true'
-    @products = @products.where(category: params[:category]) if params[:category].present?
-
-    if params[:search].present?
-      search_term = "%#{params[:search]}%"
-      @products = @products.where("name ILIKE ? OR description ILIKE ?", search_term, search_term)
+    # Optional: filter by category from your header links
+    if params[:category].present?
+      scope = scope.where(category: params[:category])
     end
 
-    @products = @products.page(params[:page]).per(12)
+    # Kaminari pagination
+    @products = scope.page(params[:page]).per(12)
   end
 
   def show
     @product = Product.find(params[:id])
   end
 end
+

@@ -1,4 +1,11 @@
-<%= link_to "About Us", page_path('about') %>
-        <%= link_to "Contact", page_path('contact') %>
+<footer class="footer">
+  <div class="footer-links">
+    <a href="#" class="footer-link">About Us</a>
+    <a href="#" class="footer-link">Contact</a>
+  </div>
 
-      &copy; 2024 Beauty Store. All rights reserved.
+  <p class="footer-copy">
+    &copy; <%= Time.current.year %> Beauty Store. All rights reserved.
+  </p>
+</footer>
+

@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: gagandeep_kaur
+  password: Admin@1234
+  host: localhost
+
+development:
+  <<: *default
+  database: beauty_store_development
+
+test:
+  <<: *default
+  database: beauty_store_test
+
+production:
+  <<: *default
+  database: beauty_store_production

@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 ruby "3.2.3"
 
+# Core Rails Gems
 gem "rails", "~> 7.1.6"
 gem "sprockets-rails"
 gem "pg", "~> 1.1"
@@ -9,34 +10,34 @@ gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
 gem "jbuilder"
-gem "tzinfo-data", platforms: %i[ windows ]  # Updated platform to :windows
+gem "tzinfo-data", platforms: %i[windows]
 gem "bootsnap", require: false
 
-# Admin & Authentication
-gem 'activeadmin'
-gem 'devise'
-# Comment out 'arctic_admin' since it could not be found
-# gem 'arctic_admin'
+# Authentication (ONLY ONE ENTRY)
+gem "devise"
 
-# Image Processing
-gem 'image_processing', '~> 1.2'
+# Admin Panel
+gem "activeadmin"
+
+# File/Image Processing
+gem "image_processing", "~> 1.2"
 
 # Pagination
-gem 'kaminari'
+gem "kaminari"
 
 # SASS
-gem 'sassc-rails'
+gem "sassc-rails"
 
 # Breadcrumbs
-gem 'gretel'
+gem "gretel"
 
-# Data
-gem 'faker'
+# Fake Data
+gem "faker"
 
 group :development, :test do
-  gem "debug", platforms: %i[ mri windows ]  # Updated platform to avoid mingw deprecation
-  gem 'rubocop', require: false
-  gem 'rubocop-rails', require: false
+  gem "debug", platforms: %i[mri windows]
+  gem "rubocop", require: false
+  gem "rubocop-rails", require: false
 end
 
 group :development do
@@ -47,3 +48,4 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
