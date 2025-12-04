@@ -2,23 +2,30 @@
 
 <% if @cart_items.blank? %>
   <p>Your cart is empty.</p>
-  <%= link_to "Start Shopping", products_path, class: "btn-primary" %>
+  <%= link_to "Start Shopping", products_path, class: "btn btn-primary" %>
 <% else %>
-  <div class="cart-items">
+  <div class="cart-container">
     <% @cart_items.each do |product| %>
-      <% quantity = @cart[product.id.to_s] || 0 %>
-
       <div class="cart-item">
-        <p>
-          <strong><%= product.name %></strong>
-          – Qty: <%= quantity %>
-          – $<%= number_with_precision(product.price * quantity, precision: 2) %>
-        </p>
+        <strong><%= product.name %></strong>
+        - $<%= number_with_precision(product.price, precision: 2) %>
 
-        <%= button_to "Remove", remove_from_cart_path(product_id: product.id),
+        <!-- Remove button -->
+        <%= button_to "Remove",
+                      remove_from_cart_path(product),
                       method: :delete,
-                      class: "btn-outline" %>
+                      class: "btn btn-sm btn-danger",
+                      data: { turbo: false } %>
       </div>
     <% end %>
+
+    <hr>
+
+    <p>
+      <strong>Total:</strong>
+      $<%= number_with_precision(@cart_items.sum(&:price), precision: 2) %>
+    </p>
+
+    <%= link_to "Continue Shopping", products_path, class: "btn btn-secondary" %>
   </div>
 <% end %>
