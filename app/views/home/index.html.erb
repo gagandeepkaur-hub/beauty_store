@@ -16,7 +16,6 @@
     </div>
   </header>
 
-
   <!-- ===== HERO SECTION ===== -->
   <section class="hero-banner">
     <%= image_tag "hero.jpg", class: "hero-img" %>
@@ -33,7 +32,6 @@
     </div>
   </section>
 
-
   <!-- ===== CATEGORY SECTION ===== -->
   <section class="category-section">
     <div class="category-grid">
@@ -45,7 +43,7 @@
         <h3 class="category-title">MAKEUP</h3>
       </div>
 
-      <!-- EYE (fixed — using existing image) -->
+      <!-- EYE -->
       <div class="category-card cat-eye">
         <%= image_tag "makeup.jpg", class: "category-img" %>
         <span class="category-label">EYE</span>
@@ -69,33 +67,24 @@
     </div>
   </section>
 
-
-
   <!-- ===== PRODUCTS SECTION ===== -->
   <section class="product-section">
     <h2 class="section-heading">Our Products</h2>
 
     <div class="product-grid">
-
       <% @products.each do |product| %>
         <article class="product-card">
-
           <!-- Product Image -->
           <a href="<%= product_path(product) %>" class="product-image-wrap">
-
             <% if product.category == "Skincare" %>
               <%= image_tag "skincare.jpg", class: "product-image" %>
-
             <% elsif product.category == "Fragrance" %>
               <%= image_tag "fragrance.jpg", class: "product-image" %>
-
             <% elsif product.category == "Haircare" %>
               <%= image_tag "haircare.jpg", class: "product-image" %>
-
             <% else %>
               <%= image_tag "makeup.jpg", class: "product-image" %>
             <% end %>
-
           </a>
 
           <!-- Product Text -->
@@ -109,7 +98,6 @@
           <button class="add-cart-btn">ADD TO CART</button>
         </article>
       <% end %>
-
     </div>
   </section>
 

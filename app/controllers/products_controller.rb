@@ -1,18 +1,15 @@
 class ProductsController < ApplicationController
   def index
-    scope = Product.all
+    @categories = Category.order(:name)
 
-    # Optional: filter by category from your header links
-    if params[:category].present?
-      scope = scope.where(category: params[:category])
-    end
+    # build ransack search object
+    @q = Product.ransack(params[:q])
 
-    # Kaminari pagination
-    @products = scope.page(params[:page]).per(12)
+    # default: sort by name if nothing else
+    @products = @q.result.includes(:category).order(:name)
   end
 
   def show
     @product = Product.find(params[:id])
   end
 end
-

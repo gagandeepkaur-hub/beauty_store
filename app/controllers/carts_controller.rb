@@ -1,40 +1,54 @@
 class CartsController < ApplicationController
   before_action :load_cart
 
-  # GET /cart
   def show
-    # @cart is a hash like { "1" => 2, "3" => 1 }
-    product_ids = @cart.keys
-    @cart_items = Product.where(id: product_ids)
+    @cart_items = Product.where(id: @cart.keys)
   end
 
-  # POST /cart/add/:product_id
-  def add
+  def add_item
     product_id = params[:product_id].to_s
-
     @cart[product_id] ||= 0
     @cart[product_id] += 1
 
-    session[:cart] = @cart
-
+    save_cart
     redirect_to cart_path, notice: "Item added to cart."
   end
 
-  # DELETE /cart/remove/:product_id
-  def remove
+  def update_item
     product_id = params[:product_id].to_s
+    quantity   = params[:quantity].to_i
 
+    if quantity <= 0
+      @cart.delete(product_id)
+    else
+      @cart[product_id] = quantity
+    end
+
+    save_cart
+    redirect_to cart_path, notice: "Cart updated."
+  end
+
+  def remove_item
+    product_id = params[:product_id].to_s
     @cart.delete(product_id)
-    session[:cart] = @cart
 
-    redirect_to cart_path, notice: "Item removed from cart."
+    save_cart
+    redirect_to cart_path, notice: "Item removed."
+  end
+
+  def clear
+    session[:cart] = {}
+    redirect_to cart_path, notice: "Cart cleared."
   end
 
   private
 
   def load_cart
-    # cart stored in session as hash: { "product_id" => quantity }
     session[:cart] ||= {}
     @cart = session[:cart]
+  end
+
+  def save_cart
+    session[:cart] = @cart
   end
 end
